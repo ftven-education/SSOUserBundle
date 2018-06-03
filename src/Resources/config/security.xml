@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<container xmlns="http://symfony.com/schema/dic/services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+        <service id="sso_user.security.authenticator.token" class="FTVEN\Education\SSOUserBundle\Security\Authenticator\SSOAuthenticator">
+            <argument type="service" id="logger"/>
+        </service>
+        <service id="sso_user.security.provider.user" class="FTVEN\Education\SSOUserBundle\Security\Provider\UserProvider">
+            <argument type="service" id="logger"/>
+            <argument type="service" id="cache"/>
+            <argument type="service" id="sso_user.connector.pool"/>
+        </service>
+        <service id="sso_user.logout_handler" class="FTVEN\Education\SSOUserBundle\EventListener\LogoutHandler">
+            <argument type="service" id="security.http_utils"/>
+            <argument type="service" id="security.token_storage"/>
+            <argument type="service" id="sso_user.connector.pool"/>
+        </service>
+    </services>
+</container>
