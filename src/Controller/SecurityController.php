@@ -47,7 +47,6 @@ class SecurityController extends Controller
 
     /**
      * @codeCoverageIgnore
-     * @Route("/edutheque/logout", name="logout", options={"expose"= true})
      */
     public function logoutAction()
     {

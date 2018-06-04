@@ -1,0 +1,10 @@
+services:
+  sso_user.security.authenticator.token:
+    class: FTVEN\Education\SSOUserBundle\Security\Authenticator\SSOAuthenticator
+    arguments: ['@logger']
+  sso_user.security.provider.user:
+    class: FTVEN\Education\SSOUserBundle\Security\Provider\UserProvider
+    arguments: ['@logger', '@cache', '@sso_user.connector.pool']
+  sso_user.logout_handler:
+    class: FTVEN\Education\SSOUserBundle\EventListener\LogoutHandler
+    arguments: ['@security.http_utils', '@security.token_storage', '@sso_user.connector.pool']

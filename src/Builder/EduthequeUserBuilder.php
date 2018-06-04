@@ -35,7 +35,7 @@ class EduthequeUserBuilder implements UserBuilderInterface
         $user->setUsername($ticket);
         $user->setApiKey($ticket);
         $user->addRole('ROLE_USER');
-        $user->setConnector('eduteque');
+        $user->setConnector('edutheque');
         $user->setStages($infos['stages']);
         $user->setCourses($infos['courses']);
         $user->setFirstName($infos['firstName']);

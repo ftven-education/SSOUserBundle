@@ -1,0 +1,4 @@
+services:
+  sso_user.validator.token:
+    class: FTVEN\Education\SSOUserBundle\Validator\TokenValidator
+    arguments: ['@logger']

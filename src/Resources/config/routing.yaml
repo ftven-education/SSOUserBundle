@@ -1,0 +1,9 @@
+login:
+  path: /login/{service}
+  defaults: { _controller: SSOUserBundle:Security:login }
+
+logout:
+  path: /logout
+  defaults: { _controller: SSOUserBundle:Security:logout }
+  options:
+    expose: true
