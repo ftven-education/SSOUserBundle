@@ -2,6 +2,7 @@ services:
   sso_user.factory.connector:
       class: FTVEN\Education\SSOUserBundle\Factory\ConnectorFactory
       arguments: ['@logger', '@sso_user.client.default', '@sso_user.validator.token', '%kernel.environment%']
+
   sso_user.connector.pool:
       class: FTVEN\Education\SSOUserBundle\Service\ConnectorPool
       arguments: ['@logger']

@@ -11,10 +11,23 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class User implements UserInterface
 {
+    const ROLE_TEACHER = "ROLE_TEACHER";
+    const ROLE_STUDENT = "ROLE_STUDENT";
+
     /**
      * @var string
      */
     private $username;
+
+    /**
+     * @var string
+     */
+    private $uuid;
+
+    /**
+     * @var string
+     */
+    private $idConnector;
 
     /**
      * @var string
@@ -87,11 +100,59 @@ class User implements UserInterface
     }
 
     /**
+     * @return string
+     */
+    public function getUuid()
+    {
+        return $this->uuid;
+    }
+
+    /**
+     * @param string $uuid
+     * @return User
+     */
+    public function setUuid($uuid)
+    {
+        $this->uuid = $uuid;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getIdConnector()
+    {
+        return $this->idConnector;
+    }
+
+    /**
+     * @param string $idConnector
+     * @return User
+     */
+    public function setIdConnector($idConnector)
+    {
+        $this->idConnector = $idConnector;
+
+        return $this;
+    }
+
+    /**
      * @return array
      */
     public function getRoles()
     {
         return $this->roles;
+    }
+
+    /**
+     * @param $role
+     *
+     * @return bool
+     */
+    public function hasRole($role)
+    {
+        return in_array($role, $this->roles);
     }
 
     /**

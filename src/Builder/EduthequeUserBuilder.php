@@ -18,6 +18,7 @@ class EduthequeUserBuilder implements UserBuilderInterface
     const NODE_EMAIL            = 'email';
     const NODE_FUNCTION         = 'fonction';
     const NODE_STUDENT_USERNAME = 'user';
+    const NODE_USER_ID          = "idUser";
     const USER_TEACHER          = "1";
     const USER_STUDENT          = "2";
 
@@ -34,6 +35,7 @@ class EduthequeUserBuilder implements UserBuilderInterface
         $user = new User();
         $user->setUsername($ticket);
         $user->setApiKey($ticket);
+        $user->setIdConnector($infos['idConnector']);
         $user->addRole('ROLE_USER');
         $user->setConnector('edutheque');
         $user->setStages($infos['stages']);
@@ -57,6 +59,7 @@ class EduthequeUserBuilder implements UserBuilderInterface
     {
         $infos = [
             'function' => $document->getElementsByTagName(self::NODE_FUNCTION)->item(0)->nodeValue,
+            'idConnector' => $document->getElementsByTagName(self::NODE_USER_ID)->item(0)->nodeValue,
             'email' => null,
             'firstName' => null,
             'lastName' => null,
@@ -82,9 +85,9 @@ class EduthequeUserBuilder implements UserBuilderInterface
     private function getRoles(array $infos)
     {
         if ($infos['function'] == self::USER_TEACHER) {
-            return ['ROLE_TEACHER'];
+            return [User::ROLE_TEACHER];
         } else {
-            return ['ROLE_STUDENT'];
+            return [User::ROLE_STUDENT];
         }
     }
 }

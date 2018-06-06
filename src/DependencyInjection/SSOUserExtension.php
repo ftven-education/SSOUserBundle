@@ -6,7 +6,7 @@ use FTVEN\Education\SSOUserBundle\Service\Connector;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
+use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\Config\FileLocator;
 
 /**
@@ -27,12 +27,12 @@ class SSOUserExtension extends Extension
         $configuration = $this->getConfiguration($configs, $container);
         $config = $this->processConfiguration($configuration, $configs);
 
-        $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        $loader->load('services.xml');
-        $loader->load('security.xml');
-        $loader->load('clients.xml');
-        $loader->load('validators.xml');
-        $loader->load('builders.xml');
+        $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader->load('services.yaml');
+        $loader->load('security.yaml');
+        $loader->load('clients.yaml');
+        $loader->load('validators.yaml');
+        $loader->load('builders.yaml');
 
         $factory = $container->getDefinition('sso_user.connector.pool');
         foreach ($config['connectors'] as $name => $environments) {
