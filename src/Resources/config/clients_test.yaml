@@ -1,4 +1,4 @@
 services:
   sso_user.client.default:
-    class: FTVEN\Education\SSOUserBundle\Test\Resources\Client\TestClient
+    class: FTVEN\Education\SSOUserBundle\Client\TestClient
     arguments: ['@logger']

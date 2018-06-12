@@ -1,6 +1,6 @@
 <?php
 
-namespace FTVEN\Education\SSOUserBundle\Test\Resources\Client;
+namespace FTVEN\Education\SSOUserBundle\Client;
 
 use FTVEN\Education\SSOUserBundle\Client\ClientInterface;
 use Psr\Log\LoggerInterface;
@@ -9,6 +9,7 @@ use Psr\Log\LoggerInterface;
  * Class TestClient
  *
  * @package FTVEN\Education\SSOUserBundle\Client
+ * @codeCoverageIgnore
  */
 class TestClient implements ClientInterface
 {
