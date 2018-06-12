@@ -32,14 +32,7 @@ class SecurityController extends Controller
         /** @var Connector $connector */
         $connector = $this->get('sso_user.connector.pool')->getConnector($service);
         $url = urlencode($this->generateUrl('login', $params, UrlGeneratorInterface::ABSOLUTE_URL));
-        if ($this->getParameter('kernel.environment') === "test") {
-            $token = $request->get('token', sprintf('good-%s-teacher', $service));
-            $url =  sprintf('%s&ticket=%s', urldecode($url), $token);
-        } else {
-            // @codeCoverageIgnoreStart
-            $url = sprintf('%s?service=%s', $connector->getLoginUrl(), $url);
-            // @codeCoverageIgnoreEnd
-        }
+        $url = sprintf('%s?service=%s', $connector->getLoginUrl(), $url);
         $logger->debug("Redirection to CAS's server", ['url' => $url, 'connector' => $service]);
 
         return $this->redirect($url);

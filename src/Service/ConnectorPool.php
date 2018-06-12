@@ -33,6 +33,7 @@ class ConnectorPool
 
     /**
      * @param string $name
+     *
      * @return bool
      */
     public function hasConnector($name)

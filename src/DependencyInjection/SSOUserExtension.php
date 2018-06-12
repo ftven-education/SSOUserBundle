@@ -34,6 +34,9 @@ class SSOUserExtension extends Extension
         $loader->load('validators.yaml');
         $loader->load('builders.yaml');
 
+        if ($container->getParameter('kernel.environment') === "test") {
+            $loader->load('clients_test.yaml');
+        }
         $factory = $container->getDefinition('sso_user.connector.pool');
         foreach ($config['connectors'] as $name => $environments) {
             if (!$container->hasDefinition(sprintf('sso_user.build.%s', $name))) {

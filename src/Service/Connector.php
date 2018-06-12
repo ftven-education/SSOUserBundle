@@ -39,7 +39,7 @@ class Connector
     /**
      * @var array
      */
-    private $urlsByEnvironments;
+    private $urls;
 
     /**
      * @var string
@@ -63,12 +63,12 @@ class Connector
         $environment
     )
     {
-        $this->logger             = $logger;
-        $this->client             = $client;
-        $this->validator          = $validator;
-        $this->urlsByEnvironments = [];
-        $this->environment        = $environment;
-        $this->userBuilder        = $userBuilder;
+        $this->logger      = $logger;
+        $this->client      = $client;
+        $this->validator   = $validator;
+        $this->urls        = [];
+        $this->environment = $environment;
+        $this->userBuilder = $userBuilder;
     }
 
     /**
@@ -76,9 +76,7 @@ class Connector
      */
     public function getLoginUrl()
     {
-        $urls = $this->getUrls();
-
-        return $urls['login_url'];
+        return $this->urls['login_url'];
     }
 
     /**
@@ -86,9 +84,7 @@ class Connector
      */
     public function getLogoutUrl()
     {
-        $urls = $this->getUrls();
-
-        return $urls['logout_url'];
+        return $this->urls['logout_url'];
     }
 
     /**
@@ -96,9 +92,7 @@ class Connector
      */
     public function getValidateUrl()
     {
-        $urls = $this->getUrls();
-
-        return $urls['validate_url'];
+        return $this->urls['validate_url'];
     }
 
     /**
@@ -126,34 +120,14 @@ class Connector
     }
 
     /**
-     * @param string $name
-     * @param array  $value
+     * @param array $url
      *
      * @return $this
      */
-    public function addEnvironment($name, array $value)
+    public function setUrl(array $url)
     {
-        $this->urlsByEnvironments[$name] = $value;
+        $this->urls = $url;
 
         return $this;
-    }
-
-    /**
-     * @return array
-     */
-    private function getUrls()
-    {
-        foreach ($this->urlsByEnvironments as $urlsByEnvironment) {
-            if (in_array($this->environment, $urlsByEnvironment['for_environments'])) {
-                return $urlsByEnvironment;
-            }
-        }
-
-        $this->logger->critical("Environment doesn't exist in auth's connector", [
-            'environment' => $this->environment,
-            'connector'   => 'gar',
-            'method'      => 'getValidateUrl',
-        ]);
-        throw new \InvalidArgumentException(sprintf("The environment [%s] does not exist", $this->environment));
     }
 }

@@ -20,17 +20,18 @@ class Configuration implements ConfigurationInterface
         $rootNode
             ->children()
                 ->arrayNode('connectors')
+                    ->useAttributeAsKey('name')
                     ->arrayPrototype()
-                        ->arrayPrototype()
+                        //->arrayPrototype()
                             ->children()
                                 ->scalarNode('login_url')->isRequired()->end()
                                 ->scalarNode('logout_url')->isRequired()->end()
                                 ->scalarNode('validate_url')->isRequired()->end()
-                                ->arrayNode('for_environments')
+                                /*->arrayNode('for_environments')
                                     ->scalarPrototype()->end()
-                                ->end()
+                                ->end()*/
                             ->end()
-                        ->end()
+                        //->end()
                     ->end()
                 ->end()
             ->end();

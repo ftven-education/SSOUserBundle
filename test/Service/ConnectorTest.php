@@ -47,65 +47,6 @@ class ConnectorTest extends TestCase
         $this->userBuilder = $this->createMock(UserBuilderInterface::class);
     }
 
-    /**
-     * @test
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage The environment [example] does not exist
-     */
-    public function itMustThrowExceptionBecauseEnvironmentsIsEmpty()
-    {
-        $this->client->expects($this->never())->method('get');
-        $this->validator->expects($this->never())->method('handledData');
-        $this->validator->expects($this->never())->method('isValid');
-        $this->userBuilder->expects($this->never())->method('buildUser');
-        $connector = new Connector($this->logger, $this->client, $this->validator, $this->userBuilder, 'example');
-        $connector->getLoginUrl();
-    }
-
-    /**
-     * @test
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage The environment [example] does not exist
-     */
-    public function itMustThrowExceptionBecauseEnvironmentIsNotDefined()
-    {
-        $urls = [
-            'login_url' => 'https://example.org/login',
-            'logout_url' => 'https://example.org/logout',
-            'validate_url' => 'https://example.org/serviceValidate',
-            'for_environments' => ['dev', 'test', 'preprod', 'prod'],
-        ];
-        $this->client->expects($this->never())->method('get');
-        $this->validator->expects($this->never())->method('handledData');
-        $this->validator->expects($this->never())->method('isValid');
-        $this->userBuilder->expects($this->never())->method('buildUser');
-        $connector = new Connector($this->logger, $this->client, $this->validator, $this->userBuilder, 'example');
-        $connector->addEnvironment('prod', $urls);
-        $connector->getLoginUrl();
-    }
-
-    /**
-     * @test
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage The environment [prod] does not exist
-     */
-    public function itMustThrowExceptionBecauseEnvironmentIsNotDefinedInList()
-    {
-        $urls = [
-            'login_url' => 'https://example.org/login',
-            'logout_url' => 'https://example.org/logout',
-            'validate_url' => 'https://example.org/serviceValidate',
-            'for_environments' => ['dev', 'test', 'preprod'],
-        ];
-        $this->client->expects($this->never())->method('get');
-        $this->validator->expects($this->never())->method('handledData');
-        $this->validator->expects($this->never())->method('isValid');
-        $this->userBuilder->expects($this->never())->method('buildUser');
-        $connector = new Connector($this->logger, $this->client, $this->validator, $this->userBuilder, 'prod');
-        $connector->addEnvironment('prod', $urls);
-        $connector->getLoginUrl();
-    }
-
     /** @test */
     public function itMustReturnLoginUrl()
     {
@@ -113,14 +54,13 @@ class ConnectorTest extends TestCase
             'login_url' => 'https://example.org/login',
             'logout_url' => 'https://example.org/logout',
             'validate_url' => 'https://example.org/serviceValidate',
-            'for_environments' => ['dev', 'test', 'preprod', 'prod'],
         ];
         $this->client->expects($this->never())->method('get');
         $this->validator->expects($this->never())->method('handledData');
         $this->validator->expects($this->never())->method('isValid');
         $this->userBuilder->expects($this->never())->method('buildUser');
         $connector = new Connector($this->logger, $this->client, $this->validator, $this->userBuilder, 'prod');
-        $connector->addEnvironment('prod', $urls);
+        $connector->setUrl($urls);
         $this->assertEquals($urls['login_url'], $connector->getLoginUrl());
     }
 
@@ -131,14 +71,13 @@ class ConnectorTest extends TestCase
             'login_url' => 'https://example.org/login',
             'logout_url' => 'https://example.org/logout',
             'validate_url' => 'https://example.org/serviceValidate',
-            'for_environments' => ['dev', 'test', 'preprod', 'prod'],
         ];
         $this->client->expects($this->never())->method('get');
         $this->validator->expects($this->never())->method('handledData');
         $this->validator->expects($this->never())->method('isValid');
         $this->userBuilder->expects($this->never())->method('buildUser');
         $connector = new Connector($this->logger, $this->client, $this->validator, $this->userBuilder, 'prod');
-        $connector->addEnvironment('prod', $urls);
+        $connector->setUrl($urls);
         $this->assertEquals($urls['logout_url'], $connector->getLogoutUrl());
     }
 
@@ -149,14 +88,13 @@ class ConnectorTest extends TestCase
             'login_url' => 'https://example.org/login',
             'logout_url' => 'https://example.org/logout',
             'validate_url' => 'https://example.org/serviceValidate',
-            'for_environments' => ['dev', 'test', 'preprod', 'prod'],
         ];
         $this->client->expects($this->never())->method('get');
         $this->validator->expects($this->never())->method('handledData');
         $this->validator->expects($this->never())->method('isValid');
         $this->userBuilder->expects($this->never())->method('buildUser');
         $connector = new Connector($this->logger, $this->client, $this->validator, $this->userBuilder, 'prod');
-        $connector->addEnvironment('prod', $urls);
+        $connector->setUrl($urls);
         $this->assertEquals($urls['validate_url'], $connector->getValidateUrl());
     }
 
@@ -212,7 +150,6 @@ class ConnectorTest extends TestCase
             'login_url' => 'https://example.org/login',
             'logout_url' => 'https://example.org/logout',
             'validate_url' => 'https://example.org/serviceValidate',
-            'for_environments' => ['dev', 'test', 'preprod', 'prod'],
         ];
 
         $user = $this->createMock(UserInterface::class);
@@ -224,7 +161,7 @@ class ConnectorTest extends TestCase
         $this->userBuilder->expects($this->never())->method('buildUser');
 
         $connector = new Connector($this->logger, $this->client, $this->validator, $this->userBuilder, 'prod');
-        $connector->addEnvironment('prod', $urls);
+        $connector->setUrl($urls);
         $this->assertInstanceOf(UserInterface::class, $connector->verifyAccessToken("http://example.org", 'token'));
     }
 
@@ -239,7 +176,6 @@ class ConnectorTest extends TestCase
             'login_url' => 'https://example.org/login',
             'logout_url' => 'https://example.org/logout',
             'validate_url' => 'https://example.org/serviceValidate',
-            'for_environments' => ['dev', 'test', 'preprod', 'prod'],
         ];
 
         $user = $this->createMock(UserInterface::class);
@@ -251,7 +187,7 @@ class ConnectorTest extends TestCase
         $this->userBuilder->expects($this->once())->method('buildUser')->willReturn($user);
 
         $connector = new Connector($this->logger, $this->client, $this->validator, $this->userBuilder, 'prod');
-        $connector->addEnvironment('prod', $urls);
+        $connector->setUrl($urls);
         $this->assertInstanceOf(UserInterface::class, $connector->verifyAccessToken("http://example.org", 'token'));
     }
 }

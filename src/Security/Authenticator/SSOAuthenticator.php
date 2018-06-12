@@ -40,15 +40,11 @@ class SSOAuthenticator extends AbstractGuardAuthenticator
      * ---
      * @param Request $request
      *
-     * @return null|array
+     * @return array
      */
     public function getCredentials(Request $request)
     {
-        if (!$token = $request->get('ticket')) {
-            $this->logger->debug('No ticket in request', ['query' => $request->getQueryString()]);
-
-            return null;
-        }
+        $token = $request->get('ticket');
         $service = $request->get('service', $request->get('portail'));
         $callback = $this->getCallback($request);
         $this->logger->debug('Ticket is in request', [
@@ -153,6 +149,8 @@ class SSOAuthenticator extends AbstractGuardAuthenticator
 
     public function supports(Request $request)
     {
-        return true;
+        $token = $request->get('ticket');
+
+        return $token === null ? false : true;
     }
 }

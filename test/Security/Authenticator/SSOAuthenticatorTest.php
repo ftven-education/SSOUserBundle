@@ -35,36 +35,13 @@ class SSOAuthenticatorTest extends TestCase
     }
 
     /** @test */
-    public function itMustNotReturnSomeCredentialsBecauseTicketParamIsNotInRequest()
-    {
-        $this->logger->expects($this->never())->method('emergency');
-        $this->logger->expects($this->never())->method('alert');
-        $this->logger->expects($this->never())->method('critical');
-        $this->logger->expects($this->never())->method('error');
-        $this->logger->expects($this->never())->method('warning');
-        $this->logger->expects($this->never())->method('notice');
-        $this->logger->expects($this->never())->method('info');
-        $this->logger->expects($this->exactly(1))->method('debug');
-
-        /** @var Request | MockObject $request */
-        $request = $this->getMockBuilder(Request::class)->disableOriginalConstructor()->getMock();
-        $request->expects($this->once())->method('get')->with('ticket')->willReturn(null);
-
-        $authenticator = new SSOAuthenticator($this->logger);
-        $this->assertNull($authenticator->getCredentials($request));
-    }
-
-    /** @test */
     public function itMustReturnCredentials()
     {
-        $this->logger->expects($this->never())->method('emergency');
-        $this->logger->expects($this->never())->method('alert');
-        $this->logger->expects($this->never())->method('critical');
-        $this->logger->expects($this->never())->method('error');
-        $this->logger->expects($this->never())->method('warning');
-        $this->logger->expects($this->never())->method('notice');
-        $this->logger->expects($this->never())->method('info');
-        $this->logger->expects($this->exactly(1))->method('debug');
+        $levels = ['emergency', 'alert', 'critical', 'error', 'warning', 'notice', 'info', 'log'];
+        foreach ($levels as $level) {
+            $this->logger->expects($this->never())->method($level);
+        }
+        $this->logger->expects($this->once())->method('debug');
 
         $query = $this->getMockBuilder(ParameterBag::class)->disableOriginalConstructor()->getMock();
         $query->expects($this->once())->method('all')->willReturn(['ticket' => 'good-edutheque-teacher', 'q' => 'sorcier']);
@@ -188,6 +165,7 @@ class SSOAuthenticatorTest extends TestCase
     {
         /** @var Request | MockObject $request */
         $request = $this->getMockBuilder(Request::class)->disableOriginalConstructor()->getMock();
+        $request->expects($this->once())->method('get')->with('ticket')->willReturn('token');
 
         $authenticator = new SSOAuthenticator($this->logger);
         $this->assertTrue($authenticator->supports($request));

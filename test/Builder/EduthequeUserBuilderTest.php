@@ -38,7 +38,7 @@ class EduthequeUserBuilderTest extends TestCase
         $this->assertInstanceOf(User::class, $user);
         $this->assertEquals('ticket', $user->getUsername());
         $this->assertEquals('ticket', $user->getApiKey());
-        $this->assertEquals('eduteque', $user->getConnector());
+        $this->assertEquals('edutheque', $user->getConnector());
         $this->assertEquals([], $user->getStages());
         $this->assertEquals([], $user->getCourses());
         $this->assertEquals('Alexandre', $user->getFirstName());
@@ -72,7 +72,7 @@ class EduthequeUserBuilderTest extends TestCase
         $this->assertInstanceOf(User::class, $user);
         $this->assertEquals('ticket', $user->getUsername());
         $this->assertEquals('ticket', $user->getApiKey());
-        $this->assertEquals('eduteque', $user->getConnector());
+        $this->assertEquals('edutheque', $user->getConnector());
         $this->assertEquals([], $user->getStages());
         $this->assertEquals([], $user->getCourses());
         $this->assertEquals('elevesDeBruno', $user->getFirstName());

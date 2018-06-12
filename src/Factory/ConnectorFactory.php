@@ -52,17 +52,15 @@ class ConnectorFactory
     }
 
     /**
-     * @param array                $environment
+     * @param array                $urls
      * @param UserBuilderInterface $userBuilder
      *
      * @return Connector
      */
-    public function getService(array $environment, UserBuilderInterface $userBuilder)
+    public function getService(array $urls, UserBuilderInterface $userBuilder)
     {
         $connector = new Connector($this->logger, $this->client, $this->validator, $userBuilder, $this->environment);
-        foreach ($environment as $name => $urls) {
-            $connector->addEnvironment($name, $urls);
-        }
+        $connector->setUrl($urls);
 
         return $connector;
     }
