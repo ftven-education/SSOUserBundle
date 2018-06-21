@@ -21,29 +21,6 @@ class SSOUserExtensionTest extends AbstractExtensionTestCase
         );
     }
 
-    /**
-     * @test
-     * @expectedException \Exception
-     * @expectedExceptionMessage You must implement the service id [sso_user.build.foo]
-     */
-    public function itMustThrowAnExceptionBecauseBuilderIsNotRegister()
-    {
-        $config = [
-            'connectors' => [
-                'foo' => [
-                    'login_url' => 'https://cas.edutheque.cndp.fr/login',
-                    'logout_url' => 'https://cas.edutheque.cndp.fr/logout',
-                    'validate_url' => 'https://cas.edutheque.cndp.fr/serviceValidate',
-                ],
-            ],
-        ];
-
-        $this->container->setParameter('kernel.environment', 'prod');
-        $this->container->register('sso_user.connector.pool', ConnectorPool::class);
-
-        $this->load($config);
-    }
-
     /** @test */
     public function itMustAddConnectorService()
     {

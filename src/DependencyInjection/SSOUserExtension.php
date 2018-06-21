@@ -2,8 +2,6 @@
 
 namespace FTVEN\Education\SSOUserBundle\DependencyInjection;
 
-use FTVEN\Education\SSOUserBundle\Service\Connector;
-use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
@@ -25,7 +23,7 @@ class SSOUserExtension extends Extension
     public function load(array $configs, ContainerBuilder $container)
     {
         $configuration = $this->getConfiguration($configs, $container);
-        $config = $this->processConfiguration($configuration, $configs);
+        $this->processConfiguration($configuration, $configs);
 
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yaml');
@@ -36,19 +34,6 @@ class SSOUserExtension extends Extension
 
         if ($container->getParameter('kernel.environment') === "test") {
             $loader->load('clients_test.yaml');
-        }
-        $factory = $container->getDefinition('sso_user.connector.pool');
-        foreach ($config['connectors'] as $name => $environments) {
-            if (!$container->hasDefinition(sprintf('sso_user.build.%s', $name))) {
-                throw new \Exception(sprintf('You must implement the service id [sso_user.build.%s]', $name));
-            }
-            $definition = $container
-                ->register('sso_user.connector.'.$name, Connector::class)
-                ->setFactory([new Reference('sso_user.factory.connector'), 'getService'])
-                ->addArgument($environments)
-                ->addArgument($container->getDefinition(sprintf('sso_user.build.%s', $name)));
-
-            $factory->addMethodCall('addConnector', [$name, $definition]);
         }
     }
 }
