@@ -117,7 +117,7 @@ class SSOAuthenticator extends AbstractGuardAuthenticator
      */
     public function start(Request $request, AuthenticationException $authException = null)
     {
-        return new Response('Authentication Required', Response::HTTP_FORBIDDEN);
+        return new RedirectResponse('/');
     }
 
     /**
