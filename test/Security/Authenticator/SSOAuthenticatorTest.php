@@ -152,7 +152,7 @@ class SSOAuthenticatorTest extends TestCase
         /** @var Response $response */
         $response = $authenticator->start($request, $exception);
         $this->assertInstanceOf(Response::class, $response);
-        $this->assertEquals(403, $response->getStatusCode());
+        $this->assertEquals(302, $response->getStatusCode());
     }
 
     public function testSupportsRememberMe()
